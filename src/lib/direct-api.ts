@@ -309,10 +309,10 @@ export async function runLab(provider: ProviderConfig, input: LabInput): Promise
   try {
     const base = normalizeBrowserBase(provider.baseUrl);
     const user = [
-      "جرّب دمج هذه المركبات:",
+      "جرّب دمج هذه المواد واذكر ماذا ينتج عنها:",
       ...input.compounds.map((compound, index) => `${index + 1}. ${oneLine(compound)}`),
-      input.note.trim() ? `ملاحظة الصيدلي: ${oneLine(input.note)}` : "ملاحظة الصيدلي: لا يوجد",
-      "غطِّ الإعطاء المشترك والمزج في المحلول أو المحقنة.",
+      input.note.trim() ? `ملاحظة المختبر: ${oneLine(input.note)}` : "ملاحظة المختبر: لا يوجد",
+      "غطِّ الناتج الكيميائي المرئي (راسب، غاز، لون، حرارة) وأي تفاعل دوائي إن كانت مواد فعالة.",
     ].join("\n");
     const result = await postChatDirect(base, provider.apiKey.trim(), provider.model, LAB_SYSTEM, user);
     if (!result.ok) {

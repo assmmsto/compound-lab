@@ -230,10 +230,10 @@ export async function askUpstream(input: {
     const user =
       input.task.kind === "lab"
         ? [
-            "جرّب دمج هذه المركبات:",
+            "جرّب دمج هذه المواد واذكر ماذا ينتج عنها:",
             ...input.task.compounds.map((compound, index) => `${index + 1}. ${oneLine(compound)}`),
-            input.task.note?.trim() ? `ملاحظة الصيدلي: ${oneLine(input.task.note)}` : "ملاحظة الصيدلي: لا يوجد",
-            "غطِّ الإعطاء المشترك والمزج في المحلول أو المحقنة.",
+            input.task.note?.trim() ? `ملاحظة المختبر: ${oneLine(input.task.note)}` : "ملاحظة المختبر: لا يوجد",
+            "غطِّ الناتج الكيميائي المرئي (راسب، غاز، لون، حرارة) وأي تفاعل دوائي إن كانت مواد فعالة.",
           ].join("\n")
         : `استخرج بطاقة مرجعية لهذا الدواء أو المركب:\n${oneLine(input.task.name)}`;
     const system = input.task.kind === "lab" ? LAB_SYSTEM : CARD_SYSTEM;

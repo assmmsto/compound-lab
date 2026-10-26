@@ -15,7 +15,9 @@ export function HistoryPanel({ onOpen }: { onOpen: (item: HistoryItem) => void }
     return (
       <section className="rounded-2xl border border-line bg-card p-4">
         <h2 className="text-lg font-semibold">السجل</h2>
-        <p className="mt-2 text-sm text-muted">لا توجد بحوث محفوظة بعد. كل تجربة وبطاقة تُحفظ هنا على هذا الجهاز.</p>
+        <p className="mt-2 text-sm text-muted">
+          لا توجد تجارب محفوظة بعد. كل تجربة تنجح تُحفظ هنا على هذا الجهاز.
+        </p>
       </section>
     );
   }
@@ -23,7 +25,7 @@ export function HistoryPanel({ onOpen }: { onOpen: (item: HistoryItem) => void }
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-lg font-semibold">بحوث محفوظة</h2>
+        <h2 className="text-lg font-semibold">تجارب محفوظة</h2>
         {confirmClear ? (
           <div className="flex gap-2">
             <button

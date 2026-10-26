@@ -72,8 +72,10 @@ export function LabPanel({ seed, onNeedSettings }: { seed: HistoryItem | null; o
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4 rounded-2xl border border-line bg-card p-4">
         <div>
-          <h2 className="text-lg font-semibold">طاولة المزج</h2>
-          <p className="text-sm text-muted">ضع المركبات، ثم اقرأ النتيجة والتقرير الكامل.</p>
+          <h2 className="text-lg font-semibold">طاولة دمج المركبات</h2>
+          <p className="text-sm text-muted">
+            ضع المادتين أو أكثر (مادة فعالة أو كاشف)، ثم اقرأ ماذا ينتج عن الدمج، وهل يصلح، ولمن، وما الضرر.
+          </p>
         </div>
         <div className="flex flex-col gap-2">
           {compounds.map((compound, index) => (
@@ -85,7 +87,13 @@ export function LabPanel({ seed, onNeedSettings }: { seed: HistoryItem | null; o
                 className={fieldClass}
                 dir="auto"
                 aria-label={`المركب ${index + 1}`}
-                placeholder={index === 0 ? "أسبرين" : index === 1 ? "ديكلون" : "مركب آخر"}
+                placeholder={
+                  index === 0
+                    ? "هيدروكسيد الصوديوم"
+                    : index === 1
+                      ? "حمض الهيدروكلوريك"
+                      : "مركب آخر"
+                }
                 value={compound}
                 autoComplete="off"
                 spellCheck={false}
@@ -123,11 +131,11 @@ export function LabPanel({ seed, onNeedSettings }: { seed: HistoryItem | null; o
             type="button"
             className={quietBtn}
             onClick={() => {
-              setCompounds(["أسبرين", "ديكلون"]);
+              setCompounds(["هيدروكسيد الصوديوم", "حمض الهيدروكلوريك"]);
               setNote("");
             }}
           >
-            مثال: أسبرين + ديكلون
+            مثال: هيدروكسيد الصوديوم + حمض الهيدروكلوريك
           </button>
         </div>
         <label className="flex flex-col gap-2 text-sm font-medium" htmlFor="lab-note">
@@ -137,7 +145,7 @@ export function LabPanel({ seed, onNeedSettings }: { seed: HistoryItem | null; o
             className={`${fieldClass} min-h-24 py-2`}
             dir="auto"
             maxLength={500}
-            placeholder="مثال: مزج وريدي في نفس المحقنة، أو إعطاء فموي لبالغ"
+            placeholder="مثال: محلول مائي 5٪ بدرجة حرارة الغرفة، أو مزج في محقنة وريدية"
             value={note}
             onChange={(event) => setNote(event.target.value)}
           />

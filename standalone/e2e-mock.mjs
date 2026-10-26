@@ -1,4 +1,4 @@
-﻿/**
+/**
  * End-to-end functional test of the real artifact (dist-standalone/pharmacy-lab.html)
  * against a local MOCK OpenAI-compatible provider. Proves the whole chain:
  * settings save → model fetch → lab run → report render → history persist —
@@ -14,26 +14,33 @@ const PORT = 8787;
 const BASE = `http://127.0.0.1:${PORT}/v1`;
 
 const LAB_REPORT = {
-  assumption: "ديكلون = diclofenac حسب الافتراض المحلي الشائع",
-  verdict: "avoid",
-  severity: "major",
+  assumption: "محلولان مائيان بتركيز 5٪، بدرجة حرارة الغرفة",
+  verdict: "caution",
+  severity: "minor",
   evidence: "established",
   confidence: "high",
-  headline: "جمع مضادَّي التهاب: خطر نزف هضمي مرتفع",
-  product: "لا ينتج مركب جديد، بل أثر علاجي تراكمي: تثبيط COX كامل يعرّض المخاطية المعدية للنزف.",
-  observation: "لا تغيّر مرئي في الوعاء، لكن يظهر على المريض أعراض نزف.",
-  mechanism: "كلا المركبين يثبّطان COX-1 الواقي للمخاطية، فتضعف حماية المعدة مرتين.",
+  headline: "تعادل حمض-قاعدة: ينتج ملح وماء مع ارتفاع حرارة خفيف",
+  product:
+    "NaOH + HCl → NaCl + H₂O. ينتج محلول كلوريد الصوديوم (ملحي مخفف) والماء، مع حرارة تتعادل.",
+  observation: "لا راسب ولا لون. حرارة خفيفة عند إضافة القاعدة إلى الحمض، وقد يبدو المحلول شفافاً تماماً.",
+  mechanism:
+    "أيون الهيدروجين من الحمض يتحد مع أيون الهيدروكسيد من القاعدة ويكوّنان الماء — تفاعل ناشر للحرارة.",
   preparation: [
-    "لا تُعدّ تركيبة مشتركة: افصل الإعطاء ساعتين على الأقل.",
-    "تحقق: اسأل عن أي ألم معدة أو سواد براز قبل الإعطاء التالي.",
+    "أضف الحمض إلى الماء أولاً، ثم أضف القاعدة تدريجياً مع تحريك.",
+    "تحقق: راقب حرارة الوعاء، وتوقف إن سخن فوق حرارة الغرفة بوضوح.",
+    "تحقق: قس pH، وإن لم يتعادل (خارج 6–8) أكمل الإضافة تدريجياً.",
   ],
-  stability: "غير معروف عندي — لا تُحفظ تركيبة مشتركة بينهما.",
-  suitableFor: ["لا يُوصى به لأي فئة دون أمر طبي صريح"],
-  unsuitableFor: ["قرحة معدة", "تاريخ نزف هضمي", "الحمل", "المسنّون فوق 65"],
-  harm: "ألم معدة، سواد البراز، قيء دموي — أي منها طارئ فوري.",
-  safety: ["لا تدمج الحبتين في وعاء واحد", "أضف حماية معدية بإشراف طبي عند الضرورة"],
-  alternative: "اختر مسكّناً واحداً؛ الباراسيتامول بديل مقبول عند الحاجة.",
-  uncertainties: "لم تُحدَّد الجرعات ولا عوامل خطورة المريض.",
+  stability: "المحلول الناتج مستقر أياماً في وعاء مغلق، بعيداً عن الضوء المباشر.",
+  suitableFor: ["تجربة تعليمية للصيدلي", "تحضير محلول مشاهد بتراكيز محسوبة"],
+  unsuitableFor: ["مزج مركز مع مركز مباشرة", "العبث دون حماية عينين وقفازات"],
+  harm: "الحرارة قد ترفع حرارة المحلول فتؤذي الجلد أو العين؛ حمض أو قاعدة مركزة تسبب حروقاً كيميائية — حرقة تستمر = طارئ.",
+  safety: [
+    "اسكب القاعدة في الماء لا العكس",
+    "قفازات ونظارة واقية إلزامية، وتهوية جيدة",
+    "اسكب الناتج المخفف في المصرف مع ماء وفير",
+  ],
+  alternative: "لأثر مرئي واضح: نترات الفضة + كلوريد الصوديوم → راسب أبيض من AgCl.",
+  uncertainties: "التراكيز الفعلية غير محددة، وترتيب المزج يغير شدة الحرارة.",
 };
 
 function cors(res) {
@@ -111,21 +118,28 @@ try {
 
   await page.getByRole("button", { name: "إغلاق" }).click();
 
-  // 3) Run the lab with two compounds
-  await page.getByRole("textbox", { name: "المركب 1", exact: true }).fill("أسبرين");
-  await page.getByRole("textbox", { name: "المركب 2", exact: true }).fill("ديكلون");
+  // 3) Run the lab with two compounds (chemical, not commercial products)
+  await page.getByRole("textbox", { name: "المركب 1", exact: true }).fill("هيدروكسيد الصوديوم");
+  await page.getByRole("textbox", { name: "المركب 2", exact: true }).fill("حمض الهيدروكلوريك");
   await page.getByRole("button", { name: "امزج المركبات واقرأ النتيجة" }).click();
   await page.waitForSelector(`text=${LAB_REPORT.headline}`, { timeout: 15000 });
   step("lab run → report headline rendered", true);
 
-  await page.waitForSelector('text=خطر عالٍ', { timeout: 5000 });
-  step("severity badge «خطر عالٍ» rendered", true);
+  await page.waitForSelector('text=خطر', { timeout: 5000 }).catch(() => null);
+  await page.waitForSelector("text=بسيط", { timeout: 5000 });
+  step("severity badge «بسيط» rendered", true);
 
-  await page.waitForSelector('text=لا تخلطهما', { timeout: 5000 });
-  step("verdict banner «لا تخلطهما» rendered", true);
+  await page.waitForSelector("text=يُخلطان بحذر", { timeout: 5000 });
+  step("verdict banner «يُخلطان بحذر» rendered", true);
+
+  await page.waitForSelector("text=ماذا ينتج عن الدمج", { timeout: 5000 });
+  step("«ماذا ينتج عن الدمج» block rendered", true);
 
   await page.waitForSelector("text=ماذا سترى بعينك", { timeout: 5000 });
   step("«ماذا سترى بعينك» block rendered", true);
+
+  await page.waitForSelector("text=طريقة التحضير", { timeout: 5000 });
+  step("«طريقة التحضير» steps rendered", true);
 
   await page.waitForSelector("text=البديل", { timeout: 5000 });
   step("«البديل» block rendered (always a way out)", true);
@@ -135,7 +149,7 @@ try {
 
   // 4) History lives under the lab now (no tabs): expand and find the run.
   await page.locator("summary", { hasText: "السجل" }).click();
-  await page.getByText("أسبرين + ديكلون").first().waitFor({ timeout: 5000 });
+  await page.getByText("هيدروكسيد الصوديوم + حمض الهيدروكلوريك").first().waitFor({ timeout: 5000 });
   step("history section lists the run", true);
 
   // 5) localStorage persistence (reload must keep provider + history)
@@ -145,7 +159,7 @@ try {
     history: localStorage.getItem("pharmacy.history.v1") ?? "",
   }));
   step("provider persisted locally after reload", persisted.provider.includes(`127.0.0.1:${PORT}`));
-  step("history persisted locally after reload", persisted.history.includes("أسبرين"));
+  step("history persisted locally after reload", persisted.history.includes("هيدروكسيد الصوديوم"));
   step("model shown on settings button after reload",
     Boolean(await page.getByRole("button", { name: /mock-(fast|pro)/ }).count()));
 

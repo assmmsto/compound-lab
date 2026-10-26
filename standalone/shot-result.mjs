@@ -9,8 +9,8 @@ import { chromium } from "playwright";
 const PORT = 8795;
 const REPORT = {
   assumption: "ديكلون = diclofenac حسب الافتراض المحلي الشائع",
-  verdict: "avoid",
-  severity: "major",
+  verdict: "caution",
+  severity: "minor",
   evidence: "established",
   confidence: "high",
   headline: "جمع مضادَّي التهاب: خطر نزف هضمي مرتفع",
@@ -71,10 +71,10 @@ await page.locator("#provider-key").fill("shot-key");
 await page.getByRole("button", { name: "فحص الاتصال وجلب النماذج" }).click();
 await page.getByText(/تم الاتصال/).first().waitFor({ timeout: 20000 });
 await page.getByRole("button", { name: "إغلاق" }).click();
-await page.getByRole("textbox", { name: "المركب 1", exact: true }).fill("أسبرين");
-await page.getByRole("textbox", { name: "المركب 2", exact: true }).fill("ديكلون");
+await page.getByRole("textbox", { name: "المركب 1", exact: true }).fill("نترات الفضة");
+await page.getByRole("textbox", { name: "المركب 2", exact: true }).fill("كلوريد الصوديوم");
 await page.getByRole("button", { name: "امزج المركبات واقرأ النتيجة" }).click();
-await page.getByText("لا تخلطهما").first().waitFor({ timeout: 30000 });
+await page.getByText("يُخلطان بحذر").first().waitFor({ timeout: 30000 });
 await page.waitForTimeout(400);
 await page.screenshot({ path: "screenshots/result-card.png", fullPage: true });
 console.log("saved screenshots/result-card.png");

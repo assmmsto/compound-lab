@@ -1,4 +1,4 @@
-﻿/**
+/**
  * STRICT verification of the rewritten provider transport.
  *
  * Two servers:
@@ -60,21 +60,21 @@ const provider = createServer((req, res) => {
       }
       const prompt = JSON.stringify(parsed.messages ?? "");
       const report = JSON.stringify({
-        assumption: "",
-        verdict: "avoid",
-        severity: "major",
+        assumption: "محلولان مائيان 5٪",
+        verdict: "caution",
+        severity: "minor",
         evidence: "established",
         confidence: "high",
-        headline: "خطر عالٍ: احتمال تداخل دوائي مهم.",
-        product: "أثر تراكمي على تجلط الدم ونزف معدي.",
-        observation: "لا تغيّر مرئي في الوعاء؛ الأعراض تظهر على المريض.",
-        mechanism: "تثبيط مضاعف لعامل حماية المخاطية المعدية.",
-        preparation: ["افصل الإعطاء ساعتين.", "تحقق: اسأل عن ألم معدة."],
-        stability: "غير معروف عندي.",
-        suitableFor: ["لا يُوصى به دون أمر طبي"],
-        unsuitableFor: ["قرحة معدة", "الحمل"],
-        harm: "قيء دموي أو براز أسود = طارئ فوري.",
-        safety: ["لا تدمج الحبتين في وعاء واحد"],
+        headline: "تعادل حمض-قاعدة: ينتج ملح وماء.",
+        product: "NaOH + HCl → NaCl + H₂O مع حرارة خفيفة.",
+        observation: "لا راسب ولا لون؛ حرارة خفيفة عند الإضافة.",
+        mechanism: "H⁺ + OH⁻ → H₂O، تفاعل ناشر للحرارة.",
+        preparation: ["أضف الحمض إلى الماء ثم القاعدة تدريجياً.", "تحقق: راقب حرارة الوعاء."],
+        stability: "مستقر أياماً في وعاء مغلق.",
+        suitableFor: ["تجربة تعليمية"],
+        unsuitableFor: ["المزج المركز المباشر"],
+        harm: "حرارة أو حروق كيميائية عند التراكيز العالية.",
+        safety: ["قفازات ونظارة واقية", "اسكب القاعدة في الماء لا العكس"],
         alternative: "باراسيتامول بدل الإسبرين.",
         uncertainties: "لم تحدد الجرعات.",
       });
@@ -229,16 +229,16 @@ async function errorText(page) {
   await page.getByRole("button", { name: "فحص الاتصال وجلب النماذج" }).click();
   await page.getByText(/تم الاتصال/).first().waitFor({ timeout: 20000 });
   await page.getByRole("button", { name: "إغلاق" }).click();
-  await page.getByRole("textbox", { name: "المركب 1", exact: true }).fill("أسبرين");
-  await page.getByRole("textbox", { name: "المركب 2", exact: true }).fill("ديكلون");
+  await page.getByRole("textbox", { name: "المركب 1", exact: true }).fill("هيدروكسيد الصوديوم");
+  await page.getByRole("textbox", { name: "المركب 2", exact: true }).fill("حمض الهيدروكلوريك");
   await page.getByRole("button", { name: "امزج المركبات واقرأ النتيجة" }).click();
   const danger = await page
-    .getByText("خطر عالٍ")
+    .getByText("يُخلطان بحذر")
     .first()
     .waitFor({ timeout: 30000 })
     .then(() => true)
     .catch(() => false);
-  check("native: lab run renders the interaction report", danger === true);
+  check("native: lab run renders the compound report", danger === true);
   check("native: console clean", consoleErrors.length === 0, consoleErrors[0]?.slice(0, 80) ?? "");
   await page.close();
 }
