@@ -144,8 +144,23 @@ export function LabPanel({ seed, onNeedSettings }: { seed: HistoryItem | null; o
         </label>
         <button type="button" className={primaryBtn} disabled={pending} onClick={() => void run()}>
           {pending ? <Loader2 className="size-4 animate-spin" /> : null}
-          {pending ? "تُجرى التجربة…" : "أجرِ التجربة"}
+          {pending ? "تُجرى التجربة…" : "امزج المركبات واقرأ النتيجة"}
         </button>
+        <div className="rounded-xl bg-paper-deep px-3 py-3">
+          <p className="text-sm font-semibold">ماذا ستحصل عليه بعد المزج؟</p>
+          <ol className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-sm text-muted">
+            <li>① القرار (يُخلطان / بحذر / لا)</li>
+            <li>② ماذا ينتج عن الدمج</li>
+            <li>③ ماذا سترى بعينك</li>
+            <li>④ لماذا يحدث</li>
+            <li>⑤ طريقة التحضير خطوة بخطوة</li>
+            <li>⑥ الثبات والصلاحية</li>
+            <li>⑦ يصلح لمن / لا يصلح</li>
+            <li>⑧ الضرر وكيف يظهر</li>
+            <li>⑨ السلامة والتخلص</li>
+            <li>⑩ البديل دائماً</li>
+          </ol>
+        </div>
         {error ? (
           <p className="text-sm text-danger" role="alert">
             {error}

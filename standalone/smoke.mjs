@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Render smoke test for dist-standalone/pharmacy-lab.html over file://
  * Uses the system Edge (Playwright channel "msedge") so no browser download
  * is needed. Verifies real content + clean console on desktop and mobile
@@ -71,7 +71,7 @@ for (const viewport of viewports) {
   verdicts.push({
     viewport: viewport.name,
     ok:
-      text.includes("مختبر الصيدلي") &&
+      text.includes("مختبر المركبات") &&
       text.includes("طاولة المزج") &&
       consoleErrors.length === 0 &&
       pageErrors.length === 0 &&

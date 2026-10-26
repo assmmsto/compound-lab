@@ -53,8 +53,15 @@ export function Home() {
             <FlaskConical className="size-6" aria-hidden />
           </span>
           <div className="min-w-0">
-            <h1 className="text-2xl font-semibold leading-tight">مختبر الصيدلي</h1>
-            <p className="text-sm text-muted">ادمج المركبات واقرأ ماذا ينتج عنها، وهل يصلح الدمج، وكيف.</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-2xl font-semibold leading-tight">مختبر المركبات</h1>
+              <span className="rounded-full bg-herb-soft px-2 py-0.5 text-[11px] font-medium text-herb">
+                نسخة نتائج جديدة
+              </span>
+            </div>
+            <p className="text-sm text-muted">
+              ادمج المواد واقرأ بطاقة كاملة: ماذا ينتج، وماذا ترى بعينك، وهل يصلح ولمن، وما الضرر والبديل.
+            </p>
           </div>
         </div>
         <button

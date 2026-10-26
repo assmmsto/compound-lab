@@ -1,4 +1,4 @@
-/**
+﻿/**
  * STRICT verification of the rewritten provider transport.
  *
  * Two servers:
@@ -231,7 +231,7 @@ async function errorText(page) {
   await page.getByRole("button", { name: "إغلاق" }).click();
   await page.getByRole("textbox", { name: "المركب 1", exact: true }).fill("أسبرين");
   await page.getByRole("textbox", { name: "المركب 2", exact: true }).fill("ديكلون");
-  await page.getByRole("button", { name: "أجرِ التجربة" }).click();
+  await page.getByRole("button", { name: "امزج المركبات واقرأ النتيجة" }).click();
   const danger = await page
     .getByText("خطر عالٍ")
     .first()

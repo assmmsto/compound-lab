@@ -1,4 +1,4 @@
-/**
+﻿/**
  * End-to-end functional test of the real artifact (dist-standalone/pharmacy-lab.html)
  * against a local MOCK OpenAI-compatible provider. Proves the whole chain:
  * settings save → model fetch → lab run → report render → history persist —
@@ -114,7 +114,7 @@ try {
   // 3) Run the lab with two compounds
   await page.getByRole("textbox", { name: "المركب 1", exact: true }).fill("أسبرين");
   await page.getByRole("textbox", { name: "المركب 2", exact: true }).fill("ديكلون");
-  await page.getByRole("button", { name: "أجرِ التجربة" }).click();
+  await page.getByRole("button", { name: "امزج المركبات واقرأ النتيجة" }).click();
   await page.waitForSelector(`text=${LAB_REPORT.headline}`, { timeout: 15000 });
   step("lab run → report headline rendered", true);
 
