@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FlaskConical, Settings } from "lucide-react";
+import { AboutDeveloper } from "@/components/about-developer";
 import { HistoryPanel } from "@/components/history-panel";
 import { LabPanel } from "@/components/lab-panel";
 import { RawAnswer } from "@/components/reports";
@@ -48,11 +49,11 @@ export function Home() {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-5 px-4 pt-6 pb-24">
       <header className="flex flex-col gap-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-start gap-3">
           <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-herb text-card">
             <FlaskConical className="size-6" aria-hidden />
           </span>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-2xl font-semibold leading-tight">مختبر المركبات</h1>
               <span className="rounded-full bg-herb-soft px-2 py-0.5 text-[11px] font-medium text-herb">
@@ -63,6 +64,7 @@ export function Home() {
               ادمج المواد واقرأ بطاقة كاملة: ماذا ينتج، وماذا ترى بعينك، وهل يصلح ولمن، وما الضرر والبديل.
             </p>
           </div>
+          <AboutDeveloper compact />
         </div>
         <button
           type="button"
